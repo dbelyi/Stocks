@@ -19,6 +19,7 @@
 		713755D929F675E800A8E590 /* PersistenceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 713755D829F675E800A8E590 /* PersistenceManager.swift */; };
 		713755DB29F675FB00A8E590 /* HapticsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 713755DA29F675FB00A8E590 /* HapticsManager.swift */; };
 		713755DD29F68AB300A8E590 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 713755DC29F68AB300A8E590 /* Extensions.swift */; };
+		713755DF29F6910300A8E590 /* SearchResultTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 713755DE29F6910300A8E590 /* SearchResultTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +37,7 @@
 		713755D829F675E800A8E590 /* PersistenceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceManager.swift; sourceTree = "<group>"; };
 		713755DA29F675FB00A8E590 /* HapticsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticsManager.swift; sourceTree = "<group>"; };
 		713755DC29F68AB300A8E590 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		713755DE29F6910300A8E590 /* SearchResultTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,6 +91,7 @@
 			isa = PBXGroup;
 			children = (
 				713755C229F6726E00A8E590 /* LaunchScreen.storyboard */,
+				713755DE29F6910300A8E590 /* SearchResultTableViewCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -196,6 +199,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				713755D529F673E500A8E590 /* StockDetailsViewController.swift in Sources */,
+				713755DF29F6910300A8E590 /* SearchResultTableViewCell.swift in Sources */,
 				713755BC29F6726D00A8E590 /* WatchListViewController.swift in Sources */,
 				713755D129F673B800A8E590 /* TopStoriesNewsViewController.swift in Sources */,
 				713755D929F675E800A8E590 /* PersistenceManager.swift in Sources */,

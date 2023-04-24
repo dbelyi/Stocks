@@ -40,6 +40,7 @@ class WatchListViewController: UIViewController {
 
   private func setUpSearchController() {
     let resultVC = SearchResultsViewController()
+    resultVC.delegate = self
     let searchVC = UISearchController(searchResultsController: resultVC)
     searchVC.searchResultsUpdater = self
     navigationItem.searchController = searchVC
@@ -61,5 +62,13 @@ extension WatchListViewController: UISearchResultsUpdating {
     // MARK: - TODO: Optimize to reduce number of searches for when user stops typing
 
     // MARK: - TODO: Update results controller
+
+    resultsVC.update(with: ["GOOG"])
   }
+}
+
+// MARK: SearchResultsViewControllerDelegate
+
+extension WatchListViewController: SearchResultsViewControllerDelegate {
+  func searchResultsViewControllerDidSelect(searchResult: String) {}
 }
