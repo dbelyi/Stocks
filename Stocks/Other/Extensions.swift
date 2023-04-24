@@ -10,6 +10,7 @@ import UIKit
 
 // MARK: - Framing
 
+/// An extension of the `UIView` class that adds computed properties for the size and position of a view relative to its frame
 extension UIView {
   var width: CGFloat {
     frame.size.width

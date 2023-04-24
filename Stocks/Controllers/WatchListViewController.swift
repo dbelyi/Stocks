@@ -14,12 +14,16 @@ class WatchListViewController: UIViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
+
     view.backgroundColor = .systemBackground
+
     setUpTitleView()
     setUpSearchController()
   }
 
   // MARK: Private
+
+  private var searchTimer: Timer?
 
   private func setUpTitleView() {
     let titleView = UIView(frame: CGRect(
@@ -31,6 +35,7 @@ class WatchListViewController: UIViewController {
 
     let label =
       UILabel(frame: CGRect(x: 0, y: 0, width: titleView.width - 20, height: titleView.height))
+
     label.text = "Stocks"
     label.font = .systemFont(ofSize: 40, weight: .medium)
     titleView.addSubview(label)
@@ -41,8 +46,10 @@ class WatchListViewController: UIViewController {
   private func setUpSearchController() {
     let resultVC = SearchResultsViewController()
     resultVC.delegate = self
+
     let searchVC = UISearchController(searchResultsController: resultVC)
     searchVC.searchResultsUpdater = self
+
     navigationItem.searchController = searchVC
   }
 }
@@ -57,18 +64,34 @@ extension WatchListViewController: UISearchResultsUpdating {
       return
     }
 
-    // MARK: - TODO: Call API to search
+    /// Reset timer
+    searchTimer?.invalidate()
 
-    // MARK: - TODO: Optimize to reduce number of searches for when user stops typing
-
-    // MARK: - TODO: Update results controller
-
-    resultsVC.update(with: ["GOOG"])
+    /// Kick off new timer
+    /// Optimize to reduce number of searches for when user stops typing
+    searchTimer = Timer.scheduledTimer(withTimeInterval: 0.3, repeats: false, block: { _ in
+      /// Call API to search
+      APICaller.shared.search(query: query) { result in
+        switch result {
+        case let .success(response):
+          DispatchQueue.main.async {
+            resultsVC.update(with: response.result)
+          }
+        case let .failure(error):
+          DispatchQueue.main.async {
+            resultsVC.update(with: [])
+          }
+          print(error)
+        }
+      }
+    })
   }
 }
 
 // MARK: SearchResultsViewControllerDelegate
 
 extension WatchListViewController: SearchResultsViewControllerDelegate {
-  func searchResultsViewControllerDidSelect(searchResult: String) {}
+  func searchResultsViewControllerDidSelect(searchResult: SearchResult) {
+    print("Did select: \(searchResult)")
+  }
 }

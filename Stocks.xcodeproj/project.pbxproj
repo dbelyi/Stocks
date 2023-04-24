@@ -20,6 +20,7 @@
 		713755DB29F675FB00A8E590 /* HapticsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 713755DA29F675FB00A8E590 /* HapticsManager.swift */; };
 		713755DD29F68AB300A8E590 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 713755DC29F68AB300A8E590 /* Extensions.swift */; };
 		713755DF29F6910300A8E590 /* SearchResultTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 713755DE29F6910300A8E590 /* SearchResultTableViewCell.swift */; };
+		71CF338229F6EA5F00A7B79F /* SearchResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71CF338129F6EA5F00A7B79F /* SearchResponse.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +39,7 @@
 		713755DA29F675FB00A8E590 /* HapticsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticsManager.swift; sourceTree = "<group>"; };
 		713755DC29F68AB300A8E590 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		713755DE29F6910300A8E590 /* SearchResultTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultTableViewCell.swift; sourceTree = "<group>"; };
+		71CF338129F6EA5F00A7B79F /* SearchResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResponse.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,6 +85,7 @@
 		713755CB29F672C300A8E590 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				71CF338129F6EA5F00A7B79F /* SearchResponse.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -206,6 +209,7 @@
 				713755D729F675C800A8E590 /* APICaller.swift in Sources */,
 				713755DD29F68AB300A8E590 /* Extensions.swift in Sources */,
 				713755B829F6726D00A8E590 /* AppDelegate.swift in Sources */,
+				71CF338229F6EA5F00A7B79F /* SearchResponse.swift in Sources */,
 				713755BA29F6726D00A8E590 /* SceneDelegate.swift in Sources */,
 				713755D329F673D400A8E590 /* SearchResultsViewController.swift in Sources */,
 				713755DB29F675FB00A8E590 /* HapticsManager.swift in Sources */,
