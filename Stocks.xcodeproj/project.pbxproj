@@ -18,6 +18,7 @@
 		713755D729F675C800A8E590 /* APICaller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 713755D629F675C800A8E590 /* APICaller.swift */; };
 		713755D929F675E800A8E590 /* PersistenceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 713755D829F675E800A8E590 /* PersistenceManager.swift */; };
 		713755DB29F675FB00A8E590 /* HapticsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 713755DA29F675FB00A8E590 /* HapticsManager.swift */; };
+		713755DD29F68AB300A8E590 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 713755DC29F68AB300A8E590 /* Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +35,7 @@
 		713755D629F675C800A8E590 /* APICaller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APICaller.swift; sourceTree = "<group>"; };
 		713755D829F675E800A8E590 /* PersistenceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceManager.swift; sourceTree = "<group>"; };
 		713755DA29F675FB00A8E590 /* HapticsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticsManager.swift; sourceTree = "<group>"; };
+		713755DC29F68AB300A8E590 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -118,6 +120,7 @@
 				713755C029F6726E00A8E590 /* Assets.xcassets */,
 				713755B729F6726D00A8E590 /* AppDelegate.swift */,
 				713755B929F6726D00A8E590 /* SceneDelegate.swift */,
+				713755DC29F68AB300A8E590 /* Extensions.swift */,
 			);
 			path = Other;
 			sourceTree = "<group>";
@@ -197,6 +200,7 @@
 				713755D129F673B800A8E590 /* TopStoriesNewsViewController.swift in Sources */,
 				713755D929F675E800A8E590 /* PersistenceManager.swift in Sources */,
 				713755D729F675C800A8E590 /* APICaller.swift in Sources */,
+				713755DD29F68AB300A8E590 /* Extensions.swift in Sources */,
 				713755B829F6726D00A8E590 /* AppDelegate.swift in Sources */,
 				713755BA29F6726D00A8E590 /* SceneDelegate.swift in Sources */,
 				713755D329F673D400A8E590 /* SearchResultsViewController.swift in Sources */,
