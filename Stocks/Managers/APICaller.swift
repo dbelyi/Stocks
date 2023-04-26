@@ -91,6 +91,11 @@ final class APICaller {
 
   private static let sharedInstance = APICaller()
 
+  /// Build a query string for the given parameters.
+  ///
+  /// - Parameters:
+  ///   - parameters: A dictionary of parameters to be included in the query string.
+  /// - Returns: A string representing the URL query string constructed from the provided parameters.
   private func queryString(fromParameters parameters: [String: String]) -> String {
     var queryItems = [URLQueryItem]()
 
