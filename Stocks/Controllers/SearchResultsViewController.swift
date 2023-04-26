@@ -20,8 +20,7 @@ class SearchResultsViewController: UIViewController {
 
   public func update(with results: [SearchResult]) {
     self.results = results
-    tableView.isHidden = results.isEmpty
-    tableView.reloadData()
+    updateTableView()
   }
 
   // MARK: Internal
@@ -30,38 +29,40 @@ class SearchResultsViewController: UIViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-
     view.backgroundColor = .systemBackground
-
     setUpTable()
   }
 
   override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
-
     tableView.frame = view.bounds
   }
 
   // MARK: Private
 
-  private var results: [SearchResult] = []
-
   private let tableView: UITableView = {
     let table = UITableView()
-
     table.register(
       SearchResultTableViewCell.self,
       forCellReuseIdentifier: SearchResultTableViewCell.identifier
     )
-
     table.isHidden = true
-
     return table
   }()
 
+  private var results: [SearchResult] = [] {
+    didSet {
+      updateTableView()
+    }
+  }
+
+  private func updateTableView() {
+    tableView.reloadData()
+    tableView.isHidden = results.isEmpty
+  }
+
   private func setUpTable() {
     view.addSubview(tableView)
-
     tableView.delegate = self
     tableView.dataSource = self
   }
@@ -75,10 +76,12 @@ extension SearchResultsViewController: UITableViewDelegate, UITableViewDataSourc
   }
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    let cell = tableView.dequeueReusableCell(
+    guard let cell = tableView.dequeueReusableCell(
       withIdentifier: SearchResultTableViewCell.identifier,
       for: indexPath
-    )
+    ) as? SearchResultTableViewCell else {
+      fatalError("Unable to dequeue SearchResultTableViewCell")
+    }
 
     let model = results[indexPath.row]
 

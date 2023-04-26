@@ -48,7 +48,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   // MARK: Private
 
   private func debug() {
-    APICaller.shared.news(for: .company(symbol: "MSFT")) { result in
+    APICaller.shared().news(for: .company(symbol: "MSFT")) { result in
       switch result {
       case let .success(news):
         print(news.count)

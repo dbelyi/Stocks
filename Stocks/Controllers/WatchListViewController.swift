@@ -27,15 +27,16 @@ class WatchListViewController: UIViewController {
 
   private var searchTimer: Timer?
 
-  private var panel: FloatingPanelController?
+  private var floatingPanelController: FloatingPanelController?
 
   private func setUpFloatingPanel() {
     let vc = NewsViewController(type: .topStories)
-    let panel = FloatingPanelController(delegate: self)
-    panel.surfaceView.backgroundColor = .secondarySystemBackground
-    panel.set(contentViewController: vc)
-    panel.addPanel(toParent: self)
-    panel.track(scrollView: vc.tableView)
+    let floatingPanelController = FloatingPanelController(delegate: self)
+    floatingPanelController.surfaceView.backgroundColor = .secondarySystemBackground
+    floatingPanelController.set(contentViewController: vc)
+    floatingPanelController.addPanel(toParent: self)
+    floatingPanelController.track(scrollView: vc.tableView)
+    self.floatingPanelController = floatingPanelController
   }
 
   private func setUpTitleView() {
@@ -46,8 +47,12 @@ class WatchListViewController: UIViewController {
       height: navigationController?.navigationBar.height ?? 100
     ))
 
-    let label =
-      UILabel(frame: CGRect(x: 0, y: 0, width: titleView.width - 20, height: titleView.height))
+    let label = UILabel(frame: CGRect(
+      x: 0,
+      y: 0,
+      width: titleView.width - 20,
+      height: titleView.height
+    ))
 
     label.text = "Stocks"
     label.font = .systemFont(ofSize: 40, weight: .medium)
@@ -57,13 +62,13 @@ class WatchListViewController: UIViewController {
   }
 
   private func setUpSearchController() {
-    let resultVC = SearchResultsViewController()
-    resultVC.delegate = self
+    let searchResultsViewController = SearchResultsViewController()
+    searchResultsViewController.delegate = self
 
-    let searchVC = UISearchController(searchResultsController: resultVC)
-    searchVC.searchResultsUpdater = self
+    let searchController = UISearchController(searchResultsController: searchResultsViewController)
+    searchController.searchResultsUpdater = self
 
-    navigationItem.searchController = searchVC
+    navigationItem.searchController = searchController
   }
 }
 
@@ -72,7 +77,8 @@ class WatchListViewController: UIViewController {
 extension WatchListViewController: UISearchResultsUpdating {
   func updateSearchResults(for searchController: UISearchController) {
     guard let query = searchController.searchBar.text,
-          let resultsVC = searchController.searchResultsController as? SearchResultsViewController,
+          let searchResultsVC = searchController
+          .searchResultsController as? SearchResultsViewController,
           !query.trimmingCharacters(in: .whitespaces).isEmpty else {
       return
     }
@@ -84,15 +90,15 @@ extension WatchListViewController: UISearchResultsUpdating {
     /// Optimize to reduce number of searches for when user stops typing
     searchTimer = Timer.scheduledTimer(withTimeInterval: 0.3, repeats: false, block: { _ in
       /// Call API to search
-      APICaller.shared.search(query: query) { result in
+      APICaller.shared().search(query: query) { result in
         switch result {
         case let .success(response):
           DispatchQueue.main.async {
-            resultsVC.update(with: response.result)
+            searchResultsVC.update(with: response.result)
           }
         case let .failure(error):
           DispatchQueue.main.async {
-            resultsVC.update(with: [])
+            searchResultsVC.update(with: [])
           }
           print(error)
         }
@@ -107,11 +113,11 @@ extension WatchListViewController: SearchResultsViewControllerDelegate {
   func searchResultsViewControllerDidSelect(searchResult: SearchResult) {
     navigationItem.searchController?.searchBar.resignFirstResponder()
 
-    let vc = StockDetailsViewController()
-    let navVC = UINavigationController(rootViewController: vc)
-    vc.title = searchResult.description
+    let stockDetailsVC = StockDetailsViewController()
+    let navigationController = UINavigationController(rootViewController: stockDetailsVC)
+    stockDetailsVC.title = searchResult.description
 
-    present(navVC, animated: true)
+    present(navigationController, animated: true)
   }
 }
 

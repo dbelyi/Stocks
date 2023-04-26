@@ -14,15 +14,25 @@ final class APICaller {
 
   // MARK: Public
 
+  /// Search for articles that match the given query string.
+  /// - Parameters:
+  ///   - query: The query string to search for.
+  ///   - completion: A closure that will be called with the search results, or an error if the search failed.
   public func search(query: String, completion: @escaping (Result<SearchResponse, Error>) -> ()) {
     guard let safeQuery = query.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
     else { return }
-    request(
+    makeAPIRequest(
       url: url(for: .search, queryParams: ["q": safeQuery]),
       expecting: SearchResponse.self,
       completion: completion
     )
   }
+
+  /// Fetch news stories for the given type.
+  ///
+  /// - Parameters:
+  ///   - type: The type of news stories to fetch.
+  ///   - completion: A closure that will be called with the news stories, or an error if the request failed.
 
   public func news(
     for type: NewsViewController.`Type`,
@@ -30,7 +40,7 @@ final class APICaller {
   ) {
     switch type {
     case .topStories:
-      request(
+      makeAPIRequest(
         url: url(for: .topStories, queryParams: ["category": "general"]),
         expecting: [NewsStory].self,
         completion: completion
@@ -38,7 +48,7 @@ final class APICaller {
     case let .company(symbol):
       let today = Date()
       let oneMonthBack = today.addingTimeInterval(-(Constants.day * 7))
-      request(
+      makeAPIRequest(
         url: url(
           for: .companyNews,
           queryParams: [
@@ -55,7 +65,9 @@ final class APICaller {
 
   // MARK: Internal
 
-  static let shared = APICaller()
+  static func shared() -> APICaller {
+    return sharedInstance
+  }
 
   // MARK: Private
 
@@ -77,41 +89,40 @@ final class APICaller {
     case noDataReturned
   }
 
-  private func url(for endpoint: Endpoint, queryParams: [String: String] = [:]) -> URL? {
-    var urlString = Constants.baseUrl + endpoint.rawValue
+  private static let sharedInstance = APICaller()
+
+  private func queryString(fromParameters parameters: [String: String]) -> String {
     var queryItems = [URLQueryItem]()
 
-    /// Add any parameters
-    for (name, value) in queryParams {
-      queryItems.append(.init(name: name, value: value))
+    for (name, value) in parameters {
+      queryItems.append(URLQueryItem(name: name, value: value))
     }
 
-    /// Add token
-    queryItems.append(.init(name: "token", value: Constants.apiKey))
+    queryItems.append(URLQueryItem(name: "token", value: Constants.apiKey))
 
-    /// Convert query items to suffix string
-    urlString += "?" + queryItems.map { "\($0.name)=\($0.value ?? "")" }.joined(separator: "&")
-
-    print("\n\(urlString)\n")
-
-    return URL(string: urlString)
+    return queryItems.map { "\($0.name)=\($0.value ?? "")" }.joined(separator: "&")
   }
 
-  /**
-   Sends a network request and receives a response in JSON format.
+  /// Build a URL for the given endpoint and query parameters.
+  ///
+  /// - Parameters:
+  ///   - endpoint: The endpoint to use.
+  ///   - queryParams: The query parameters to include in the request.
+  /// - Returns: A URL for the given endpoint and query parameters, or `nil` if the URL was invalid.
+  private func url(for endpoint: Endpoint, queryParams: [String: String] = [:]) -> URL? {
+    return URL(
+      string: Constants.baseUrl + endpoint
+        .rawValue + "?" + queryString(fromParameters: queryParams)
+    )
+  }
 
-   - Parameters:
-      - url: The URL to send the request to.
-      - expecting: The type of the expected response.
-      - completion: A closure to handle the result.
-
-   If the URL is not specified, the `APIError.invalidUrl` error is passed to the
-   completion closure. A `URLSession` task is created that sends a request to the
-   specified URL. If there is data in the response and no errors, the data is decoded
-   from JSON into the specified type and passed to the completion closure as a
-   successful result. Otherwise, an error is passed to the completion closure.
-   */
-  private func request<T: Codable>(
+  /// Make an API request and decode the response.
+  ///
+  /// - Parameters:
+  ///   - url: The URL to request.
+  ///   - expecting: The expected type of the response.
+  ///   - completion: A closure that will be called with the decoded response, or an error if the request failed.
+  private func makeAPIRequest<T: Codable>(
     url: URL?,
     expecting: T.Type,
     completion: @escaping (Result<T, Error>) -> ()
@@ -131,14 +142,24 @@ final class APICaller {
         return
       }
 
-      do {
-        let result = try JSONDecoder().decode(expecting, from: data)
-        completion(.success(result))
-      } catch {
-        completion(.failure(error))
-      }
+      completion(self.decodeResponse(from: data, expecting: expecting))
     }
 
     task.resume()
+  }
+
+  /// Decode the response data into the expected type.
+  ///
+  /// - Parameters:
+  ///   - data: The raw response data.
+  ///   - expecting: The expected type of the response.
+  /// - Returns: A `Result` with the decoded response, or an error if decoding failed.
+  private func decodeResponse<T: Codable>(from data: Data, expecting: T.Type) -> Result<T, Error> {
+    do {
+      let result = try JSONDecoder().decode(expecting, from: data)
+      return .success(result)
+    } catch {
+      return .failure(error)
+    }
   }
 }
