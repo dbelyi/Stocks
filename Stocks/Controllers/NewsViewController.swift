@@ -5,6 +5,7 @@
 //  Created by Danila Belyi on 24.04.2023.
 //
 
+import SafariServices
 import UIKit
 
 // MARK: - NewsViewController
@@ -90,7 +91,10 @@ class NewsViewController: UIViewController {
     }
   }
 
-  private func open(url: URL) {}
+  private func open(url: URL) {
+    let safariVC = SFSafariViewController(url: url)
+    present(safariVC, animated: true)
+  }
 }
 
 // MARK: UITableViewDelegate, UITableViewDataSource
@@ -129,7 +133,21 @@ extension NewsViewController: UITableViewDelegate, UITableViewDataSource {
 
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     tableView.deselectRow(at: indexPath, animated: true)
+    let story = stories[indexPath.row]
+    guard let url = URL(string: story.url) else {
+      presentFailedToOpenAlert()
+      return
+    }
+    open(url: url)
+  }
 
-    // MARK: - TODO: Open news story
+  private func presentFailedToOpenAlert() {
+    let alert = UIAlertController(
+      title: "Unable to Open",
+      message: "We were unable to open the article.",
+      preferredStyle: .alert
+    )
+    alert.addAction(UIAlertAction(title: "Dissmis", style: .cancel))
+    present(alert, animated: true)
   }
 }
