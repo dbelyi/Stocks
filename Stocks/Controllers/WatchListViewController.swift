@@ -19,6 +19,8 @@ class WatchListViewController: UIViewController {
     view.backgroundColor = .systemBackground
 
     setUpSearchController()
+    setUpTableView()
+    setUpWatchlistData()
     setUpFloatingPanel()
     setUpTitleView()
   }
@@ -28,6 +30,34 @@ class WatchListViewController: UIViewController {
   private var searchTimer: Timer?
 
   private var floatingPanelController: FloatingPanelController?
+
+  private var watchlistMap: [String: [String]] = [:]
+
+  private var viewModels: [String] = []
+
+  private let tableView: UITableView = {
+    let table = UITableView()
+
+    return table
+  }()
+
+  private func setUpTableView() {
+    view.addSubview(tableView)
+    tableView.delegate = self
+    tableView.dataSource = self
+  }
+
+  private func setUpWatchlistData() {
+    let symbols = PersistenceManager.shared.watchlist
+
+    for symbol in symbols {
+      // MARK: - TODO: Fetch market data per symbol
+
+      watchlistMap[symbol] = ["some string"]
+    }
+
+    tableView.reloadData()
+  }
 
   private func setUpFloatingPanel() {
     let vc = NewsViewController(type: .topStories)
@@ -126,5 +156,23 @@ extension WatchListViewController: SearchResultsViewControllerDelegate {
 extension WatchListViewController: FloatingPanelControllerDelegate {
   func floatingPanelDidChangeState(_ fpc: FloatingPanelController) {
     navigationItem.titleView?.isHidden = fpc.state == .full
+  }
+}
+
+// MARK: UITableViewDelegate, UITableViewDataSource
+
+extension WatchListViewController: UITableViewDelegate, UITableViewDataSource {
+  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    return watchlistMap.count
+  }
+
+  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    return UITableViewCell()
+  }
+
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    tableView.deselectRow(at: indexPath, animated: true)
+
+    // MARK: - Open details for selection
   }
 }
