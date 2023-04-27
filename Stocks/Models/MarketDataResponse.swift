@@ -43,7 +43,7 @@ struct MarketDataResponse: Codable {
 
     print(sortedData[0])
 
-    return sortedData
+    return result
   }
 }
 

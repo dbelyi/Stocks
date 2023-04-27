@@ -65,10 +65,10 @@ final class APICaller {
 
   public func marketData(
     for symbol: String,
-    numberOfDays: TimeInterval = 7,
+    numberOfDays: TimeInterval = 1,
     completion: @escaping (Result<MarketDataResponse, Error>) -> ()
   ) {
-    let today = Date().addingTimeInterval(-(Constants.day))
+    let today = Date()
     let prior = today.addingTimeInterval(-(Constants.day * numberOfDays))
     makeAPIRequest(
       url: url(
@@ -138,10 +138,12 @@ final class APICaller {
   ///   - queryParams: The query parameters to include in the request.
   /// - Returns: A URL for the given endpoint and query parameters, or `nil` if the URL was invalid.
   private func url(for endpoint: Endpoint, queryParams: [String: String] = [:]) -> URL? {
-    return URL(
+    guard let url = URL(
       string: Constants.baseUrl + endpoint
         .rawValue + "?" + queryString(fromParameters: queryParams)
-    )
+    ) else { return nil }
+    print(url)
+    return url
   }
 
   /// Make an API request and decode the response.

@@ -20,6 +20,12 @@ class StockChartView: UIView {
 
   // MARK: Internal
 
+  struct ViewModel {
+    let data: [Double]
+    let showLegend: Bool
+    let showAxis: Bool
+  }
+
   override func layoutSubviews() {
     super.layoutSubviews()
   }
@@ -27,4 +33,6 @@ class StockChartView: UIView {
   func reset() {
     // MARK: - TODO: Reset the chart view
   }
+
+  func configure(with viewModel: ViewModel) {}
 }
