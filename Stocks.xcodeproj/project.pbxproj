@@ -24,6 +24,7 @@
 		713755DF29F6910300A8E590 /* SearchResultTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 713755DE29F6910300A8E590 /* SearchResultTableViewCell.swift */; };
 		71952C2729F97A0600538D77 /* NewsStoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71952C2629F97A0600538D77 /* NewsStoryTableViewCell.swift */; };
 		71CF338229F6EA5F00A7B79F /* SearchResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71CF338129F6EA5F00A7B79F /* SearchResponse.swift */; };
+		71EB2FF029FA5C6E00E5D18D /* MarketDataResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71EB2FEF29FA5C6E00E5D18D /* MarketDataResponse.swift */; };
 		DCF11099F5BA77BEDBD450FB /* Pods_Stocks.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 18C0FA60738FDFE5DB486298 /* Pods_Stocks.framework */; };
 /* End PBXBuildFile section */
 
@@ -49,6 +50,7 @@
 		713755DE29F6910300A8E590 /* SearchResultTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultTableViewCell.swift; sourceTree = "<group>"; };
 		71952C2629F97A0600538D77 /* NewsStoryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsStoryTableViewCell.swift; sourceTree = "<group>"; };
 		71CF338129F6EA5F00A7B79F /* SearchResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResponse.swift; sourceTree = "<group>"; };
+		71EB2FEF29FA5C6E00E5D18D /* MarketDataResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketDataResponse.swift; sourceTree = "<group>"; };
 		BF0E0FBCE5C1102D672256C7 /* Pods-Stocks.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Stocks.debug.xcconfig"; path = "Target Support Files/Pods-Stocks/Pods-Stocks.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -117,6 +119,7 @@
 			children = (
 				71CF338129F6EA5F00A7B79F /* SearchResponse.swift */,
 				711C8C5729F936CD00B2C77C /* NewsStory.swift */,
+				71EB2FEF29FA5C6E00E5D18D /* MarketDataResponse.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -278,6 +281,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				71EB2FF029FA5C6E00E5D18D /* MarketDataResponse.swift in Sources */,
 				713755D529F673E500A8E590 /* StockDetailsViewController.swift in Sources */,
 				713755DF29F6910300A8E590 /* SearchResultTableViewCell.swift in Sources */,
 				713755BC29F6726D00A8E590 /* WatchListViewController.swift in Sources */,
