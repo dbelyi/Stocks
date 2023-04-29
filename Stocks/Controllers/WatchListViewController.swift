@@ -25,6 +25,7 @@ class WatchListViewController: UIViewController {
     fetchWatchlistData()
     setUpFloatingPanel()
     setUpTitleView()
+    setUpObserver()
   }
 
   override func viewDidLayoutSubviews() {
@@ -41,6 +42,8 @@ class WatchListViewController: UIViewController {
   private var watchlistMap: [String: [CandleStick]] = [:]
 
   private var viewModels: [WatchListTableViewCell.ViewModel] = []
+
+  private var observer: NSObjectProtocol?
 
   private let tableView: UITableView = {
     let table = UITableView()
@@ -62,7 +65,7 @@ class WatchListViewController: UIViewController {
 
     let group = DispatchGroup()
 
-    for symbol in symbols {
+    for symbol in symbols where watchlistMap[symbol] == nil {
       group.enter()
 
       APICaller.shared().marketData(for: symbol) { [weak self] result in
@@ -167,6 +170,18 @@ class WatchListViewController: UIViewController {
 
     navigationItem.searchController = searchController
   }
+
+  private func setUpObserver() {
+    observer = NotificationCenter.default.addObserver(
+      forName: .didAddToWatchList,
+      object: nil,
+      queue: .main,
+      using: { [weak self] _ in
+        self?.viewModels.removeAll()
+        self?.fetchWatchlistData()
+      }
+    )
+  }
 }
 
 // MARK: UISearchResultsUpdating
@@ -210,7 +225,10 @@ extension WatchListViewController: SearchResultsViewControllerDelegate {
   func searchResultsViewControllerDidSelect(searchResult: SearchResult) {
     navigationItem.searchController?.searchBar.resignFirstResponder()
 
-    let stockDetailsVC = StockDetailsViewController()
+    let stockDetailsVC = StockDetailsViewController(
+      symbol: searchResult.displaySymbol,
+      companyName: searchResult.description
+    )
     let navigationController = UINavigationController(rootViewController: stockDetailsVC)
     stockDetailsVC.title = searchResult.description
 
@@ -250,7 +268,14 @@ extension WatchListViewController: UITableViewDelegate, UITableViewDataSource {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     tableView.deselectRow(at: indexPath, animated: true)
 
-    // MARK: - Open details for selection
+    let viewModel = viewModels[indexPath.row]
+    let stockDetailsVC = StockDetailsViewController(
+      symbol: viewModel.symbol,
+      companyName: viewModel.companyName,
+      candleStickData: watchlistMap[viewModel.symbol] ?? []
+    )
+    let navigationController = UINavigationController(rootViewController: stockDetailsVC)
+    present(navigationController, animated: true)
   }
 
   func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {

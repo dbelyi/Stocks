@@ -8,6 +8,12 @@
 import Foundation
 import UIKit
 
+// MARK: - Notification
+
+extension Notification.Name {
+  static let didAddToWatchList = Notification.Name("didAddToWatchList")
+}
+
 // MARK: - NumberFormatter
 
 extension NumberFormatter {
