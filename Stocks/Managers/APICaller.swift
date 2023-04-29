@@ -65,7 +65,7 @@ final class APICaller {
 
   public func marketData(
     for symbol: String,
-    numberOfDays: TimeInterval = 1,
+    numberOfDays: TimeInterval = 7,
     completion: @escaping (Result<MarketDataResponse, Error>) -> ()
   ) {
     let today = Date()
@@ -142,7 +142,6 @@ final class APICaller {
       string: Constants.baseUrl + endpoint
         .rawValue + "?" + queryString(fromParameters: queryParams)
     ) else { return nil }
-    print(url)
     return url
   }
 
