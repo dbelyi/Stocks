@@ -38,12 +38,16 @@ final class PersistenceManager {
 
   static let shared = PersistenceManager()
 
-  var watchlist: [String] {
+  public var watchlist: [String] {
     if !hasOnboarded {
       userDefaults.set(true, forKey: Constants.onboardedKey)
       setUpDefaults()
     }
     return userDefaults.stringArray(forKey: Constants.watchlistKey) ?? []
+  }
+  
+  public func watchlistContains(symbol: String) -> Bool {
+    return watchlist.contains(symbol)
   }
 
   // MARK: Private

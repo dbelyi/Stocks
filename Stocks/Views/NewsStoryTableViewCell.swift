@@ -13,8 +13,10 @@ class NewsStoryTableViewCell: UITableViewCell {
 
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
-    contentView.backgroundColor = .secondarySystemBackground
-    backgroundColor = .secondarySystemBackground
+//    contentView.backgroundColor = .secondarySystemBackground
+//    backgroundColor = .secondarySystemBackground
+    contentView.backgroundColor = .clear
+    backgroundColor = .clear
     addSubviews(sourceLabel, headlineLabel, dateLabel, storyImageView)
   }
 
