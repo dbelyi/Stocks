@@ -5,6 +5,7 @@
 //  Created by Danila Belyi on 27.04.2023.
 //
 
+import Charts
 import UIKit
 
 class StockChartView: UIView {
@@ -12,6 +13,7 @@ class StockChartView: UIView {
 
   override init(frame: CGRect) {
     super.init(frame: frame)
+    addSubview(chartView)
   }
 
   required init?(coder: NSCoder) {
@@ -28,11 +30,41 @@ class StockChartView: UIView {
 
   override func layoutSubviews() {
     super.layoutSubviews()
+    chartView.frame = bounds
   }
 
   func reset() {
-    // MARK: - TODO: Reset the chart view
+    chartView.data = nil
   }
 
-  func configure(with viewModel: ViewModel) {}
+  func configure(with viewModel: ViewModel) {
+    var entries = [ChartDataEntry]()
+
+    for (index, value) in viewModel.data.enumerated() {
+      entries.append(.init(x: Double(index), y: value))
+    }
+
+    let dataSet = LineChartDataSet(entries: entries, label: "Some label")
+    dataSet.fillColor = .systemBlue
+    dataSet.drawFilledEnabled = false
+    dataSet.drawIconsEnabled = false
+    dataSet.drawValuesEnabled = false
+    dataSet.drawCirclesEnabled = false
+    let data = LineChartData(dataSet: dataSet)
+    chartView.data = data
+  }
+
+  // MARK: - Private
+
+  private let chartView: LineChartView = {
+    let chartView = LineChartView()
+    chartView.pinchZoomEnabled = false
+    chartView.setScaleEnabled(true)
+    chartView.xAxis.enabled = false
+    chartView.drawGridBackgroundEnabled = false
+    chartView.legend.enabled = false
+    chartView.leftAxis.enabled = false
+    chartView.rightAxis.enabled = false
+    return chartView
+  }()
 }
