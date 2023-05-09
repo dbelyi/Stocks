@@ -11,7 +11,7 @@ import UIKit
 // MARK: - WatchListViewController
 
 class WatchListViewController: UIViewController {
-  // MARK: Internal
+  // MARK: - Internal
 
   static var maxChangeWidth: CGFloat = 0
 
@@ -33,7 +33,7 @@ class WatchListViewController: UIViewController {
     tableView.frame = view.bounds
   }
 
-  // MARK: Private
+  // MARK: - Private
 
   private var searchTimer: Timer?
 

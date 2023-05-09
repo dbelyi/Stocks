@@ -8,11 +8,19 @@
 import Foundation
 
 final class PersistenceManager {
-  // MARK: Lifecycle
+  // MARK: - Lifecycle
 
   private init() {}
 
-  // MARK: Public
+  // MARK: - Public
+
+  public var watchlist: [String] {
+    if !hasOnboarded {
+      userDefaults.set(true, forKey: Constants.onboardedKey)
+      setUpDefaults()
+    }
+    return userDefaults.stringArray(forKey: Constants.watchlistKey) ?? []
+  }
 
   public func addToWatchlist(symbol: String, companyName: String) {
     var current = watchlist
@@ -34,23 +42,15 @@ final class PersistenceManager {
     userDefaults.set(newList, forKey: Constants.watchlistKey)
   }
 
-  // MARK: Internal
-
-  static let shared = PersistenceManager()
-
-  public var watchlist: [String] {
-    if !hasOnboarded {
-      userDefaults.set(true, forKey: Constants.onboardedKey)
-      setUpDefaults()
-    }
-    return userDefaults.stringArray(forKey: Constants.watchlistKey) ?? []
-  }
-  
   public func watchlistContains(symbol: String) -> Bool {
     return watchlist.contains(symbol)
   }
 
-  // MARK: Private
+  // MARK: - Internal
+
+  static let shared = PersistenceManager()
+
+  // MARK: - Private
 
   private enum Constants {
     static let onboardedKey = "hasOnboarded"

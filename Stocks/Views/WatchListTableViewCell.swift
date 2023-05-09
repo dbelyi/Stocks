@@ -16,7 +16,7 @@ protocol WatchListTableViewCellDelegate: AnyObject {
 // MARK: - WatchListTableViewCell
 
 class WatchListTableViewCell: UITableViewCell {
-  // MARK: Lifecycle
+  // MARK: - Lifecycle
 
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -28,7 +28,7 @@ class WatchListTableViewCell: UITableViewCell {
     fatalError()
   }
 
-  // MARK: Public
+  // MARK: - Public
 
   public func configure(with viewModel: ViewModel) {
     symbolLabel.text = viewModel.symbol
@@ -38,7 +38,7 @@ class WatchListTableViewCell: UITableViewCell {
     changeLabel.backgroundColor = viewModel.changeColor
   }
 
-  // MARK: Internal
+  // MARK: - Internal
 
   struct ViewModel {
     let symbol: String
@@ -117,7 +117,7 @@ class WatchListTableViewCell: UITableViewCell {
     miniChartView.reset()
   }
 
-  // MARK: Private
+  // MARK: - Private
 
   private let miniChartView: StockChartView = {
     let chart = StockChartView()

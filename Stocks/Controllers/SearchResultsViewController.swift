@@ -16,14 +16,14 @@ protocol SearchResultsViewControllerDelegate: AnyObject {
 // MARK: - SearchResultsViewController
 
 class SearchResultsViewController: UIViewController {
-  // MARK: Public
+  // MARK: - Public
 
   public func update(with results: [SearchResult]) {
     self.results = results
     updateTableView()
   }
 
-  // MARK: Internal
+  // MARK: - Internal
 
   weak var delegate: SearchResultsViewControllerDelegate?
 
@@ -38,7 +38,7 @@ class SearchResultsViewController: UIViewController {
     tableView.frame = view.bounds
   }
 
-  // MARK: Private
+  // MARK: - Private
 
   private let tableView: UITableView = {
     let table = UITableView()

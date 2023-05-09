@@ -9,15 +9,15 @@ import Foundation
 import UIKit
 
 final class HapticsManager {
-  // MARK: Lifecycle
+  // MARK: - Lifecycle
 
   private init() {}
 
-  // MARK: Public
+  // MARK: - Public
 
   public func vibrateFromSelection() {}
 
-  // MARK: Internal
+  // MARK: - Internal
 
   static let shared = HapticsManager()
 }

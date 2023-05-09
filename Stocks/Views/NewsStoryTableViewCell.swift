@@ -9,7 +9,7 @@ import SDWebImage
 import UIKit
 
 class NewsStoryTableViewCell: UITableViewCell {
-  // MARK: Lifecycle
+  // MARK: - Lifecycle
 
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -24,7 +24,7 @@ class NewsStoryTableViewCell: UITableViewCell {
     fatalError()
   }
 
-  // MARK: Public
+  // MARK: - Public
 
   public func configure(with viewModel: ViewModel) {
     headlineLabel.text = viewModel.headline
@@ -36,10 +36,10 @@ class NewsStoryTableViewCell: UITableViewCell {
     // storyImageView.setImage(with: viewModel.imageURL)
   }
 
-  // MARK: Internal
+  // MARK: - Internal
 
   struct ViewModel {
-    // MARK: Lifecycle
+    // MARK: - Lifecycle
 
     init(model: NewsStory) {
       self.source = model.source
@@ -48,7 +48,7 @@ class NewsStoryTableViewCell: UITableViewCell {
       self.imageURL = URL(string: model.image)
     }
 
-    // MARK: Internal
+    // MARK: - Internal
 
     let source: String
     let headline: String
@@ -103,7 +103,7 @@ class NewsStoryTableViewCell: UITableViewCell {
     storyImageView.image = nil
   }
 
-  // MARK: Private
+  // MARK: - Private
 
   private let sourceLabel: UILabel = {
     let label = UILabel()

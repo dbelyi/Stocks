@@ -8,7 +8,7 @@
 import UIKit
 
 class StockChartView: UIView {
-  // MARK: Lifecycle
+  // MARK: - Lifecycle
 
   override init(frame: CGRect) {
     super.init(frame: frame)
@@ -18,7 +18,7 @@ class StockChartView: UIView {
     fatalError()
   }
 
-  // MARK: Internal
+  // MARK: - Internal
 
   struct ViewModel {
     let data: [Double]

@@ -8,11 +8,11 @@
 import Foundation
 
 final class APICaller {
-  // MARK: Lifecycle
+  // MARK: - Lifecycle
 
   private init() {}
 
-  // MARK: Public
+  // MARK: - Public
 
   /// Search for articles that match the given query string.
   /// - Parameters:
@@ -85,13 +85,21 @@ final class APICaller {
     )
   }
 
-  // MARK: Internal
+  public func financialMetrics(
+    for symbol: String,
+    completion: @escaping (Result<FinancialMetricsResponse, Error>) -> ()
+  ) {
+    let url = url(for: .financials, queryParams: ["symbol": symbol, "metric": "all"])
+    makeAPIRequest(url: url, expecting: FinancialMetricsResponse.self, completion: completion)
+  }
+
+  // MARK: - Internal
 
   static func shared() -> APICaller {
     return sharedInstance
   }
 
-  // MARK: Private
+  // MARK: - Private
 
   private enum Constants {
     static let apiKey = "ch3atopr01qrc1e6mtogch3atopr01qrc1e6mtp0"
@@ -105,6 +113,7 @@ final class APICaller {
     case topStories = "news"
     case companyNews = "company-news"
     case marketData = "stock/candle"
+    case financials = "stock/metric"
   }
 
   private enum APIError: Error {

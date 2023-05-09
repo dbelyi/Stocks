@@ -11,7 +11,7 @@ import UIKit
 // MARK: - StockDetailsViewController
 
 class StockDetailsViewController: UIViewController {
-  // MARK: Lifecycle
+  // MARK: - Lifecycle
 
   init(symbol: String, companyName: String, candleStickData: [CandleStick] = []) {
     self.symbol = symbol
@@ -24,7 +24,7 @@ class StockDetailsViewController: UIViewController {
     fatalError()
   }
 
-  // MARK: Internal
+  // MARK: - Internal
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -46,7 +46,7 @@ class StockDetailsViewController: UIViewController {
     dismiss(animated: true, completion: nil)
   }
 
-  // MARK: Private
+  // MARK: - Private
 
   private let symbol: String
 
@@ -79,10 +79,43 @@ class StockDetailsViewController: UIViewController {
   }
 
   private func fetchFinancialData() {
-    renderChart()
+    let group = DispatchGroup()
+
+    if candleStickData.isEmpty {
+      group.enter()
+    }
+
+    group.enter()
+    APICaller.shared().financialMetrics(for: symbol) { [weak self] result in
+      defer {
+        group.leave()
+      }
+      switch result {
+      case let .success(response):
+        let metrics = response.metric
+        print(metrics)
+      case let .failure(error):
+        print(error)
+      }
+    }
+    group.notify(queue: .main) { [weak self] in
+      self?.renderChart()
+    }
   }
 
-  private func renderChart() {}
+  private func renderChart() {
+    let headerView =
+      StockDetailHeaderView(frame: CGRect(
+        x: 0,
+        y: 0,
+        width: view.width,
+        height: (view.width * 0.7) + 100
+      ))
+
+//    headerView.backgroundColor = .systemRed
+
+    tableView.tableHeaderView = headerView
+  }
 
   private func fetchNews() {
     APICaller.shared().news(for: .company(symbol: symbol)) { [weak self] result in

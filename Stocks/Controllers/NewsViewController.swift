@@ -11,7 +11,7 @@ import UIKit
 // MARK: - NewsViewController
 
 class NewsViewController: UIViewController {
-  // MARK: Lifecycle
+  // MARK: - Lifecycle
 
   init(type: Type) {
     self.type = type
@@ -22,13 +22,13 @@ class NewsViewController: UIViewController {
     fatalError()
   }
 
-  // MARK: Internal
+  // MARK: - Internal
 
   enum `Type` {
     case topStories
     case company(symbol: String)
 
-    // MARK: Internal
+    // MARK: - Internal
 
     var title: String {
       switch self {
@@ -65,7 +65,7 @@ class NewsViewController: UIViewController {
     tableView.frame = view.bounds
   }
 
-  // MARK: Private
+  // MARK: - Private
 
   private let type: Type
 

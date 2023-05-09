@@ -16,7 +16,7 @@ protocol NewsHeaderViewDelegate: AnyObject {
 // MARK: - NewsHeaderView
 
 class NewsHeaderView: UITableViewHeaderFooterView {
-  // MARK: Lifecycle
+  // MARK: - Lifecycle
 
   override init(reuseIdentifier: String?) {
     super.init(reuseIdentifier: reuseIdentifier)
@@ -28,14 +28,14 @@ class NewsHeaderView: UITableViewHeaderFooterView {
     fatalError()
   }
 
-  // MARK: Public
+  // MARK: - Public
 
   public func configure(with viewModel: ViewModel) {
     label.text = viewModel.title
     button.isHidden = !viewModel.shouldShowAddButton
   }
 
-  // MARK: Internal
+  // MARK: - Internal
 
   struct ViewModel {
     let title: String
@@ -46,6 +46,16 @@ class NewsHeaderView: UITableViewHeaderFooterView {
   static let prefferedHeight: CGFloat = 40
 
   weak var delegate: NewsHeaderViewDelegate?
+
+  let button: UIButton = {
+    let button = UIButton()
+    button.setTitle("+ WatchList", for: .normal)
+    button.backgroundColor = .systemBlue
+    button.setTitleColor(.white, for: .normal)
+    button.layer.cornerRadius = 8
+    button.layer.masksToBounds = true
+    return button
+  }()
 
   override func layoutSubviews() {
     super.layoutSubviews()
@@ -65,22 +75,12 @@ class NewsHeaderView: UITableViewHeaderFooterView {
     label.text = nil
   }
 
-  // MARK: Private
+  // MARK: - Private
 
   private let label: UILabel = {
     let label = UILabel()
     label.font = .boldSystemFont(ofSize: 32)
     return label
-  }()
-
-  let button: UIButton = {
-    let button = UIButton()
-    button.setTitle("+ WatchList", for: .normal)
-    button.backgroundColor = .systemBlue
-    button.setTitleColor(.white, for: .normal)
-    button.layer.cornerRadius = 8
-    button.layer.masksToBounds = true
-    return button
   }()
 
   @objc

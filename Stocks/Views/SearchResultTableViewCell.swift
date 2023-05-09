@@ -8,7 +8,7 @@
 import UIKit
 
 class SearchResultTableViewCell: UITableViewCell {
-  // MARK: Lifecycle
+  // MARK: - Lifecycle
 
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: .subtitle, reuseIdentifier: reuseIdentifier)
@@ -18,7 +18,7 @@ class SearchResultTableViewCell: UITableViewCell {
     fatalError()
   }
 
-  // MARK: Internal
+  // MARK: - Internal
 
   static let identifier = "SearchResultTableViewCell"
 }

@@ -9,7 +9,7 @@ import UIKit
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
-  // MARK: Internal
+  // MARK: - Internal
 
   func application(
     _ application: UIApplication,
@@ -45,7 +45,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
   }
 
-  // MARK: Private
+  // MARK: - Private
 
   private func debug() {}
 }
