@@ -56,6 +56,8 @@ class StockDetailsViewController: UIViewController {
 
   private var stories = [NewsStory]()
 
+  private var metrics: Metrics?
+
   private let tableView: UITableView = {
     let table = UITableView()
     table.register(
@@ -93,7 +95,7 @@ class StockDetailsViewController: UIViewController {
       switch result {
       case let .success(response):
         let metrics = response.metric
-        print(metrics)
+        self?.metrics = metrics
       case let .failure(error):
         print(error)
       }
@@ -112,7 +114,19 @@ class StockDetailsViewController: UIViewController {
         height: (view.width * 0.7) + 100
       ))
 
-//    headerView.backgroundColor = .systemRed
+    var viewModels = [MetricCollectionViewCell.ViewModel]()
+    if let metrics = metrics {
+      viewModels.append(.init(name: "52W High", value: "\(metrics.AnnualWeekHigh)"))
+      viewModels.append(.init(name: "52L High", value: "\(metrics.AnnualWeekLow)"))
+      viewModels.append(.init(name: "52W Return", value: "\(metrics.AnnualWeekPriceReturnDaily)"))
+      viewModels.append(.init(name: "Beya", value: "\(metrics.beta)"))
+      viewModels.append(.init(name: "10D Vol.", value: "\(metrics.TenDayAverageTradingVolume)"))
+    }
+
+    headerView.configure(
+      chartViewModel: .init(data: [], showLegend: false, showAxis: false),
+      metricViewModels: viewModels
+    )
 
     tableView.tableHeaderView = headerView
   }
