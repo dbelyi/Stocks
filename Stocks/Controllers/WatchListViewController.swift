@@ -136,6 +136,8 @@ class WatchListViewController: UIViewController {
     floatingPanelController.set(contentViewController: vc)
     floatingPanelController.addPanel(toParent: self)
     floatingPanelController.track(scrollView: vc.tableView)
+    floatingPanelController.surfaceView.layer.cornerRadius = 6.0
+    floatingPanelController.surfaceView.clipsToBounds = true
     self.floatingPanelController = floatingPanelController
   }
 
