@@ -60,6 +60,9 @@ class WatchListViewController: UIViewController {
     tableView.dataSource = self
   }
 
+  /// This method is responsible for fetching data for the watchlist symbols stored in `PersistenceManager`.
+  /// It uses `APICaller` to fetch market data for each symbol and updates the `watchlistMap` with the `candlestick` data for each symbol.
+  /// This method uses `DispatchGroup` to wait for all API calls to complete before creating view models and reloading the table view.
   private func fetchWatchlistData() {
     let symbols = PersistenceManager.shared.watchlist
 
@@ -91,6 +94,9 @@ class WatchListViewController: UIViewController {
     tableView.reloadData()
   }
 
+  /// This method is responsible for creating an array of view models for each symbol in the watchlistMap.
+  /// It uses helper methods to calculate the latest closing price and percentage change for each symbol.
+  /// It also creates a chart view model to display the candlestick data for each symbol.
   private func createViewModels() {
     var viewModels = [WatchListTableViewCell.ViewModel]()
 
@@ -114,11 +120,21 @@ class WatchListViewController: UIViewController {
     self.viewModels = viewModels
   }
 
+  /// This method is a helper method that is responsible for calculating the latest closing price for a symbol using its candlestick data.
+  ///
+  /// - Parameter data: An array of `CandleStick` objects representing the historical data for a symbol.
+  /// - Returns: A formatted string representing the latest closing price for the symbol, with two decimal places.
   private func getLatestClosingPrice(from data: [CandleStick]) -> String {
     guard let closingPrice = data.first?.close else { return "" }
     return .formatted(number: closingPrice)
   }
 
+  /// This method is a helper method that is responsible for calculating the percentage change for a symbol using its candlestick data.
+  ///
+  /// - Parameters:
+  ///   - symbol: A string representing the symbol of the company.
+  ///   - data: An array of `CandleStick` objects representing the historical data for the symbol.
+  /// - Returns: A double value representing the percentage change for the symbol.
   private func getChangePersentage(symbol: String, for data: [CandleStick]) -> Double {
     let latestDate = data[0].date
     guard let latestClose = data.first?.close, let priorClose = data.first(where: {
@@ -130,6 +146,11 @@ class WatchListViewController: UIViewController {
     return diff
   }
 
+  /// This method is responsible for setting up a floating panel to display news stories.
+  /// It creates a `NewsViewController` object with a specified type, creates a `FloatingPanelController`
+  /// object with self as the delegate, and sets the content view controller to the `NewsViewController`.
+  /// It also sets the background color of the surface view, adds the panel to the parent view controller,
+  /// tracks the table view for scrolling, and sets the corner radius and clips to bounds for the surface view.
   private func setUpFloatingPanel() {
     let vc = NewsViewController(type: .topStories)
     let floatingPanelController = FloatingPanelController(delegate: self)
@@ -142,6 +163,10 @@ class WatchListViewController: UIViewController {
     self.floatingPanelController = floatingPanelController
   }
 
+  /// This method is responsible for setting up the title view of the navigation bar.
+  /// It creates a `UIView` object with a specified frame, creates a `UILabel` object with
+  /// a specified frame and text, sets the font of the label, adds the label to the title
+  /// view, and sets the title view of the navigation item to the title view.
   private func setUpTitleView() {
     let titleView = UIView(frame: CGRect(
       x: 0,
@@ -164,6 +189,11 @@ class WatchListViewController: UIViewController {
     navigationItem.titleView = titleView
   }
 
+  /// This method is responsible for setting up the search controller for the navigation bar.
+  /// It creates a `SearchResultsViewController` object, sets its delegate to self, creates a
+  /// `UISearchController` object with the `SearchResultsViewController` as the search results
+  /// view controller, sets the search results updater to self, and sets the navigation item's
+  /// search controller to the search controller.
   private func setUpSearchController() {
     let searchResultsViewController = SearchResultsViewController()
     searchResultsViewController.delegate = self
@@ -174,6 +204,8 @@ class WatchListViewController: UIViewController {
     navigationItem.searchController = searchController
   }
 
+  /// This method sets up an observer to listen for a notification. When the notification is
+  /// received, it removes all view models, fetches watchlist data again, and updates the UI.
   private func setUpObserver() {
     observer = NotificationCenter.default.addObserver(
       forName: .didAddToWatchList,
@@ -190,6 +222,14 @@ class WatchListViewController: UIViewController {
 // MARK: UISearchResultsUpdating
 
 extension WatchListViewController: UISearchResultsUpdating {
+  /// This method is responsible for updating the search results for a search bar.
+  /// It gets the search query from the search bar, validates it, resets the search
+  /// timer, and kicks off a new timer to search for the query using the `APICaller`
+  /// class. When the search result is returned, it updates the search results view
+  /// controller with the response.
+  ///
+  /// - Parameter searchController: A UISearchController object representing the
+  /// search controller for the navigation bar.
   func updateSearchResults(for searchController: UISearchController) {
     guard let query = searchController.searchBar.text,
           let searchResultsVC = searchController
@@ -198,13 +238,9 @@ extension WatchListViewController: UISearchResultsUpdating {
       return
     }
 
-    /// Reset timer
     searchTimer?.invalidate()
 
-    /// Kick off new timer
-    /// Optimize to reduce number of searches for when user stops typing
     searchTimer = Timer.scheduledTimer(withTimeInterval: 0.3, repeats: false, block: { _ in
-      /// Call API to search
       APICaller.shared().search(query: query) { result in
         switch result {
         case let .success(response):
@@ -225,6 +261,14 @@ extension WatchListViewController: UISearchResultsUpdating {
 // MARK: SearchResultsViewControllerDelegate
 
 extension WatchListViewController: SearchResultsViewControllerDelegate {
+  /// This method is called when the user selects a search result in a search view controller.
+  /// The method resigns the first responder status of the search bar, creates a new
+  /// `StockDetailsViewController` instance, sets its properties using the selected SearchResult
+  /// object, creates a new `UINavigationController` instance with the `StockDetailsViewController`
+  /// instance as its root view controller, sets the title of the `StockDetailsViewController` to
+  /// the selected SearchResult description, and presents the navigation controller modally.
+  ///
+  /// - Parameter searchResult: A SearchResult object that represents the selected search result.
   func searchResultsViewControllerDidSelect(searchResult: SearchResult) {
     navigationItem.searchController?.searchBar.resignFirstResponder()
 
@@ -242,6 +286,10 @@ extension WatchListViewController: SearchResultsViewControllerDelegate {
 // MARK: FloatingPanelControllerDelegate
 
 extension WatchListViewController: FloatingPanelControllerDelegate {
+  /// This method is called by a `FloatingPanelController` whenever its state changes.
+  /// The method hides or shows the navigation item's title view based on whether the floating panel state is .full or not.
+  ///
+  /// - Parameter fpc: A `FloatingPanelController` object that represents the floating panel whose state has changed.
   func floatingPanelDidChangeState(_ fpc: FloatingPanelController) {
     navigationItem.titleView?.isHidden = fpc.state == .full
   }
