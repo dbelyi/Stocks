@@ -133,12 +133,14 @@ class StockDetailsViewController: UIViewController {
       viewModels.append(.init(name: "Beya", value: "\(metrics.beta)"))
       viewModels.append(.init(name: "10D Vol.", value: "\(metrics.TenDayAverageTradingVolume)"))
     }
-
+    
+    let change = getChangePersentage(symbol: symbol, for: candleStickData)
     headerView.configure(
       chartViewModel: .init(
         data: candleStickData.reversed().map { $0.close },
         showLegend: true,
-        showAxis: true
+        showAxis: true,
+        fillColor: change < 0 ? .systemRed : .systemGreen
       ),
       metricViewModels: viewModels
     )
@@ -166,6 +168,17 @@ class StockDetailsViewController: UIViewController {
       target: self,
       action: #selector(didTapClose)
     )
+  }
+  
+  private func getChangePersentage(symbol: String, for data: [CandleStick]) -> Double {
+    let latestDate = data[0].date
+    guard let latestClose = data.first?.close, let priorClose = data.first(where: {
+      !Calendar.current.isDate($0.date, inSameDayAs: latestDate)
+    })?.close else { return 0 }
+
+    let diff = 1 - (priorClose / latestClose)
+
+    return diff
   }
 }
 

@@ -26,6 +26,7 @@ class StockChartView: UIView {
     let data: [Double]
     let showLegend: Bool
     let showAxis: Bool
+    let fillColor: UIColor
   }
 
   override func layoutSubviews() {
@@ -44,9 +45,14 @@ class StockChartView: UIView {
       entries.append(.init(x: Double(index), y: value))
     }
 
-    let dataSet = LineChartDataSet(entries: entries, label: "Some label")
-    dataSet.fillColor = .systemBlue
-    dataSet.drawFilledEnabled = false
+    chartView.rightAxis.enabled = viewModel.showAxis
+    chartView.legend.enabled = viewModel.showLegend
+
+    let dataSet = LineChartDataSet(entries: entries, label: "7 Days")
+    dataSet.fillColor = viewModel.fillColor
+    dataSet.setColor(viewModel.fillColor)
+    dataSet.lineWidth = 0.45
+    dataSet.drawFilledEnabled = true
     dataSet.drawIconsEnabled = false
     dataSet.drawValuesEnabled = false
     dataSet.drawCirclesEnabled = false
