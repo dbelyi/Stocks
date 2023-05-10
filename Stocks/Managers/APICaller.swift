@@ -14,10 +14,12 @@ final class APICaller {
 
   // MARK: - Public
 
-  /// Search for articles that match the given query string.
+  /// This method is a public function that searches for information using a specified query and returns a response in a completion handler.
+  /// This method is used to search for data from an API.
+  ///
   /// - Parameters:
   ///   - query: The query string to search for.
-  ///   - completion: A closure that will be called with the search results, or an error if the search failed.
+  ///   - completion: A closure that is called when the search has completed. This closure takes a `Result` object with a `SearchResponse` object on success and an `Error` object on failure.
   public func search(query: String, completion: @escaping (Result<SearchResponse, Error>) -> ()) {
     guard let safeQuery = query.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
     else { return }
@@ -33,7 +35,14 @@ final class APICaller {
   /// - Parameters:
   ///   - type: The type of news stories to fetch.
   ///   - completion: A closure that will be called with the news stories, or an error if the request failed.
+  ///
 
+  /// This method is a public function that retrieves news stories from an API for a specified type and returns a response in a completion handler.
+  /// This method is used to get news stories from an API. It takes a type parameter and a completion handler closure as parameters.
+  ///
+  /// - Parameters:
+  ///   - type: The type of news stories to retrieve. This is an enum value of type `NewsViewController.Type`.
+  ///   - completion: A closure that is called when the news stories have been retrieved. This closure takes a `Result` object with an array of `NewsStory` objects on success and an `Error` object on failure.
   public func news(
     for type: NewsViewController.`Type`,
     completion: @escaping (Result<[NewsStory], Error>) -> ()
@@ -63,6 +72,14 @@ final class APICaller {
     }
   }
 
+  /// This method is implemented using the `makeAPIRequest` method, which is a private method that makes a request to an API and returns a response.
+  /// This method calculates the start and end dates based on the number of days parameter and the current date.
+  /// It then calls the `makeAPIRequest` method with the URL for the market data endpoint, the expected response type (`MarketDataResponse.self`), and the completion handler.
+  ///
+  /// - Parameters:
+  ///   - symbol: The symbol of the financial instrument to retrieve market data for.
+  ///   - numberOfDays: The number of days of market data to retrieve. This is an optional parameter with a default value of 7 days.
+  ///   - completion: A closure that is called when the market data has been retrieved. This closure takes a `Result` object with a `MarketDataResponse` object on success and an `Error` object on failure.
   public func marketData(
     for symbol: String,
     numberOfDays: TimeInterval = 7,
@@ -85,6 +102,11 @@ final class APICaller {
     )
   }
 
+  /// This method is a public method that returns financial metrics for the given symbol
+  ///
+  /// - Parameters:
+  ///   - symbol: The stock symbol for which the user wants to retrieve financial metrics.
+  ///   - completion: A completion handler that returns a `Result` object containing either a `FinancialMetricsResponse` object or an `Error` object.
   public func financialMetrics(
     for symbol: String,
     completion: @escaping (Result<FinancialMetricsResponse, Error>) -> ()
@@ -123,11 +145,11 @@ final class APICaller {
 
   private static let sharedInstance = APICaller()
 
-  /// Build a query string for the given parameters.
+  /// This method is a private method that takes an input parameter `parameters` of type `[String: String]` and returns a `String`.
+  /// This method converts the given dictionary of parameters into a valid query string to be appended to the end of a URL.
   ///
-  /// - Parameters:
-  ///   - parameters: A dictionary of parameters to be included in the query string.
-  /// - Returns: A string representing the URL query string constructed from the provided parameters.
+  /// - Parameter parameters: A dictionary of key-value pairs representing the query parameters to be added to the URL.
+  /// - Returns: This method returns a `String` value containing the query string constructed from the given `parameters`.
   private func queryString(fromParameters parameters: [String: String]) -> String {
     var queryItems = [URLQueryItem]()
 
@@ -140,12 +162,12 @@ final class APICaller {
     return queryItems.map { "\($0.name)=\($0.value ?? "")" }.joined(separator: "&")
   }
 
-  /// Build a URL for the given endpoint and query parameters.
+  /// This method is used to construct a URL for a given endpoint and query parameters. It returns an optional URL.
   ///
   /// - Parameters:
-  ///   - endpoint: The endpoint to use.
-  ///   - queryParams: The query parameters to include in the request.
-  /// - Returns: A URL for the given endpoint and query parameters, or `nil` if the URL was invalid.
+  ///   - endpoint: An enumeration value of Endpoint type. It is used to specify the endpoint for which the URL needs to be constructed.
+  ///   - queryParams:  dictionary of type `[String: String]` that contains query parameters. It is optional and its default value is an empty dictionary.
+  /// - Returns: An optional `URL` object constructed by combining the baseUrl, endpoint, and queryParams. If the resulting URL is invalid, then it returns nil.
   private func url(for endpoint: Endpoint, queryParams: [String: String] = [:]) -> URL? {
     guard let url = URL(
       string: Constants.baseUrl + endpoint
@@ -154,12 +176,13 @@ final class APICaller {
     return url
   }
 
-  /// Make an API request and decode the response.
+  /// This method is used to make an API request for a given URL and decode the response into a specified type `T`.
+  /// It accepts a completion handler that is called after the request is complete, either with a result of type `T` or an error.
   ///
   /// - Parameters:
-  ///   - url: The URL to request.
-  ///   - expecting: The expected type of the response.
-  ///   - completion: A closure that will be called with the decoded response, or an error if the request failed.
+  ///   - url: An optional `URL` object that specifies the URL for which the request needs to be made. If the URL is nil, then it returns an error.
+  ///   - expecting: A generic parameter that specifies the type `T` into which the response should be decoded.
+  ///   - completion: A closure that is called after the request is complete. It takes a `Result<T, Error>` parameter that contains either a result of type `T` or an error.
   private func makeAPIRequest<T: Codable>(
     url: URL?,
     expecting: T.Type,
@@ -186,12 +209,12 @@ final class APICaller {
     task.resume()
   }
 
-  /// Decode the response data into the expected type.
+  /// This method is used to decode the response data obtained from an API request into a specified type `T`.
   ///
   /// - Parameters:
-  ///   - data: The raw response data.
-  ///   - expecting: The expected type of the response.
-  /// - Returns: A `Result` with the decoded response, or an error if decoding failed.
+  ///   - data: A `Data` object that contains the response data obtained from an API request.
+  ///   - expecting: A generic parameter that specifies the type `T` into which the response data should be decoded.
+  /// - Returns: A `Result<T, Error>` type that either contains the decoded result of type `T` or an error.
   private func decodeResponse<T: Codable>(from data: Data, expecting: T.Type) -> Result<T, Error> {
     do {
       let result = try JSONDecoder().decode(expecting, from: data)
