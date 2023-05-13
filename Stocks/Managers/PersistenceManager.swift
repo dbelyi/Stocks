@@ -63,17 +63,25 @@ final class PersistenceManager {
 
   // MARK: - Internal
 
+  /// This property is a static property of the `PersistenceManager` class that returns a singleton instance of the `PersistenceManager`.
+  /// This property is used to access the same instance of `PersistenceManager` from anywhere within the application.
   static let shared = PersistenceManager()
 
   // MARK: - Private
 
+  /// This property is a private enum that provides static constants for keys used to store values in the user's defaults database.
+  /// In this example, `onboardedKey` and `watchlistKey` are two constants that are used to store a boolean value and an array of strings respectively.
   private enum Constants {
     static let onboardedKey = "hasOnboarded"
     static let watchlistKey = "watchlist"
   }
 
+  /// This property is a private instance of the `UserDefaults` class that provides access to the user's defaults database.
+  /// By default, it is set to the standard user defaults database, which is a persistent storage mechanism used to store small amounts of user data.
   private let userDefaults: UserDefaults = .standard
 
+  /// This property is a private computed property that retrieves a boolean value from the user's defaults database using the `userDefaults` property and the onboardedKey constant.
+  /// If the key-value pair doesn't exist yet, the default value of false is returned.
   private var hasOnboarded: Bool {
     return userDefaults.bool(forKey: Constants.onboardedKey)
   }

@@ -45,7 +45,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   }
 
   /// This method is a built-in function in the `UIApplication` class that gets called when the system discards a scene session.
-  /// 
+  ///
   /// - Parameters:
   ///   - application: A `UIApplication` object representing the app requesting to discard the scene sessions.
   ///   - sceneSessions: A set of `UISceneSession` objects that represent the scene sessions being discarded.

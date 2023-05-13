@@ -117,12 +117,15 @@ final class APICaller {
 
   // MARK: - Internal
 
+  /// This method is a static method of the `APICaller` class that returns a singleton instance of the `APICaller`.
+  /// This method is used to access the same instance of `APICaller` from anywhere within the application.
   static func shared() -> APICaller {
     return sharedInstance
   }
 
   // MARK: - Private
 
+  /// The Constants property is a private enum that provides static constants for API keys, base URLs, and time intervals used to make API requests.
   private enum Constants {
     static let apiKey = "ch3atopr01qrc1e6mtogch3atopr01qrc1e6mtp0"
     static let sandboxApiKey = "ch3atopr01qrc1e6mtq0"
@@ -130,6 +133,8 @@ final class APICaller {
     static let day: TimeInterval = 3600 * 24
   }
 
+  /// This property is a private enum that provides static cases for different API endpoints used to make API requests.
+  /// In this example, `search`, `topStories`, `companyNews`, `marketData`, and `financials` are five endpoints used in this application.
   private enum Endpoint: String {
     case search
     case topStories = "news"
@@ -138,11 +143,15 @@ final class APICaller {
     case financials = "stock/metric"
   }
 
+  /// This property is a private enum that provides static cases for different API errors that may occur when making API requests.
+  /// In this example, the `invalidUrl` and `noDataReturned` cases are used to handle errors that may occur when the API request URL is invalid or when no data is returned from the API.
   private enum APIError: Error {
     case invalidUrl
     case noDataReturned
   }
 
+  /// This property is a private static instance of the `APICaller` class that is used to create a singleton instance of APICaller.
+  /// This property is used to ensure that only one instance of APICaller is created and used throughout the application.
   private static let sharedInstance = APICaller()
 
   /// This method is a private method that takes an input parameter `parameters` of type `[String: String]` and returns a `String`.
